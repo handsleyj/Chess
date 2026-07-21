@@ -5,6 +5,6 @@ public:
     Board();
     void display();
 
-    private:
+private:
     char squares[8][8];
 };
