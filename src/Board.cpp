@@ -110,3 +110,7 @@ void Board::display() {
         std::cout << "\n";
     }
 }
+
+void Board::movePiece(int startRow, int startCol, int endRow, int endCol) {
+    squares[endRow][endCol] = std::move(squares[startRow][startCol]);
+}
