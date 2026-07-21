@@ -22,6 +22,8 @@ struct PiecePosition {
 class Piece {
 public:
     Piece(PieceType type, PieceColour colour);
+    PieceType getType();
+    PieceColour getColour();
 
 private:
     PieceType type;

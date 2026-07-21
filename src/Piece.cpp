@@ -5,3 +5,10 @@ Piece::Piece(PieceType type, PieceColour colour)
 {
 }
 
+PieceType Piece::getType() {
+    return this->type;
+}
+
+PieceColour Piece::getColour() {
+    return this-> colour;
+}
