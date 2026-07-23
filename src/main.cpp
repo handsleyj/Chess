@@ -9,13 +9,13 @@ struct Coordinate {
 };
 
 /* Converts input to coordinate values */
-Coordinate toCoordinates(const char *str_ptr) {
-    if (std::strlen(str_ptr) != 2) {
+Coordinate toCoordinates(const std::string &square) {
+    if (square.length() != 2) {
         return {-1, -1};
     }
     
-    int col = std::tolower(str_ptr[0]) - 'a'; // character offset from 'a'
-    int row = 8 - (str_ptr[1] - '0'); // character offset from '0' (top of the board, row 8)
+    int col = std::tolower(square[0]) - 'a'; // character offset from 'a'
+    int row = 8 - (square[1] - '0'); // character offset from '0' (top of the board, row 8)
 
     /* 
      * Ensure column does not exceed 'h' (7) or go below 'a' (0) 
@@ -32,20 +32,27 @@ Coordinate toCoordinates(const char *str_ptr) {
 int main() {
     Board board;
 
-    board.display();
+    while (true) {
+        board.display();
+        std::string from, to;
+        
+        /* Get input */
+        std::cout << ">> Enter Move: ";
+        std::cin >> from >> to;
 
-    /* Test (row, col) conversion */
-    Coordinate start = toCoordinates("e2");
-    Coordinate end = toCoordinates("e4");
-    
-    board.movePiece(
-        start.row, start.column, 
-        end.row, end.column
-    );
+        Coordinate start = toCoordinates(from);
+        Coordinate end = toCoordinates(to);
 
-    std::cout << "\nAfter move:\n";
-
-    board.display();
+        if (start.row == -1 || end.row == -1) {
+            std::cout << "Invalid move format.\n";
+        }
+        else {
+            if (!board.movePiece(start.row, start.column, end.row, end.column)) {
+                std::cout << "No piece on that square!\n";
+                continue;
+            }
+        }
+    }
 
     return 0;
 }

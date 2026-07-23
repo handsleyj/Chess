@@ -98,7 +98,14 @@ Board::Board() {
 
 /* To display the chess board to the screen */
 void Board::display() {
+    /* Clear screen and move cursor to top left */
+    std::cout << "\033[2J\033[H";
+
+    /* Populate table */
     for (int row = 0; row < 8; row++) {
+
+        std::cout << 8 - row << " | ";
+
         for (int col = 0; col < 8; col++) {
             if (squares[row][col] == nullptr) {
                 std::cout << ". ";
@@ -109,8 +116,17 @@ void Board::display() {
         }
         std::cout << "\n";
     }
+
+    /* Output grid coordinates */
+    std::cout << "    a b c d e f g h\n";
 }
 
-void Board::movePiece(int startRow, int startCol, int endRow, int endCol) {
+bool Board::movePiece(int startRow, int startCol, int endRow, int endCol) {
+    if (squares[startRow][startCol] == nullptr) {
+        return false;
+    }
+
     squares[endRow][endCol] = std::move(squares[startRow][startCol]);
+
+    return true;
 }
