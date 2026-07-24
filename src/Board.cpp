@@ -7,32 +7,32 @@
 char getSymbol(const Piece &piece) {
     switch (piece.getType())
     {
-    /* Pawn (P) */
-    case PieceType::PAWN: 
-        return piece.getColour() == PieceColour::WHITE ? 'P' : 'p';
-    
-    /* Rook (R) */
-    case PieceType::ROOK:
-        return piece.getColour() == PieceColour::WHITE ? 'R' : 'r';
-    
-    /* Knight (N) */
-    case PieceType::KNIGHT:
-        return piece.getColour() == PieceColour::WHITE ? 'N': 'n';
-    
-    /* Bishop (B) */
-    case PieceType::BISHOP:
-        return piece.getColour() == PieceColour::WHITE ? 'B': 'b';
-    
-    /* Queen (Q) */
-    case PieceType::QUEEN:
-        return piece.getColour() == PieceColour::WHITE ? 'Q' : 'q';
-    
-    /* King (K) */
-    case PieceType::KING:
-        return piece.getColour() == PieceColour::WHITE ? 'K' : 'k';
-    
-    default:
-        return '?';
+        /* Pawn (P) */
+        case PieceType::PAWN: 
+            return piece.getColour() == PieceColour::WHITE ? 'P' : 'p';
+        
+        /* Rook (R) */
+        case PieceType::ROOK:
+            return piece.getColour() == PieceColour::WHITE ? 'R' : 'r';
+        
+        /* Knight (N) */
+        case PieceType::KNIGHT:
+            return piece.getColour() == PieceColour::WHITE ? 'N': 'n';
+        
+        /* Bishop (B) */
+        case PieceType::BISHOP:
+            return piece.getColour() == PieceColour::WHITE ? 'B': 'b';
+        
+        /* Queen (Q) */
+        case PieceType::QUEEN:
+            return piece.getColour() == PieceColour::WHITE ? 'Q' : 'q';
+        
+        /* King (K) */
+        case PieceType::KING:
+            return piece.getColour() == PieceColour::WHITE ? 'K' : 'k';
+        
+        default:
+            return '?';
     }
 }
 
@@ -127,7 +127,12 @@ bool Board::movePiece(Coordinate start, Coordinate end) {
         return false;
     }
 
-    squares[end.row][end.column] = std::move(squares[start.row][start.column]);
+    if (squares[start.row][start.column]->canMove(start, end)) {
+        squares[end.row][end.column] = std::move(squares[start.row][start.column]);
+    }
+    else {
+        return false;
+    }
 
     return true;
 }

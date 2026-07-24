@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Coordinate.h"
+
 enum class PieceType {
     PAWN = 0,
     ROOK,
@@ -19,8 +21,10 @@ public:
     Piece(PieceType type, PieceColour colour);
     PieceType getType() const;
     PieceColour getColour() const;
+    bool canMove(Coordinate start, Coordinate end) const;
 
 private:
     PieceType type;
     PieceColour colour;
+    bool hasMoved;
 };
