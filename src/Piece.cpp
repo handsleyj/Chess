@@ -5,10 +5,10 @@ Piece::Piece(PieceType type, PieceColour colour)
 {
 }
 
-PieceType Piece::getType() {
+PieceType Piece::getType() const {
     return this->type;
 }
 
-PieceColour Piece::getColour() {
+PieceColour Piece::getColour() const {
     return this-> colour;
 }

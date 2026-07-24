@@ -1,10 +1,10 @@
 #include "../include/Board.h"
+#include "../include/Coordinate.h"
 #include <iostream>
-#include <vector>
-#include <memory>
+#include <array>
 
 /* Get the symbol to show for a given chess piece */
-char getSymbol(Piece &piece) {
+char getSymbol(const Piece &piece) {
     switch (piece.getType())
     {
     /* Pawn (P) */
@@ -39,7 +39,7 @@ char getSymbol(Piece &piece) {
 /* To create the chess board array */
 Board::Board() {
     /* The row for the furthest edges of the board */
-    std::vector<PieceType> edgeRow {
+    const std::array<PieceType, 8> edgeRow {
         PieceType::ROOK,
         PieceType::KNIGHT,
         PieceType::BISHOP,
@@ -121,12 +121,12 @@ void Board::display() {
     std::cout << "    a b c d e f g h\n";
 }
 
-bool Board::movePiece(int startRow, int startCol, int endRow, int endCol) {
-    if (squares[startRow][startCol] == nullptr) {
+bool Board::movePiece(Coordinate start, Coordinate end) {
+    if (squares[start.row][start.column] == nullptr) {
         return false;
     }
 
-    squares[endRow][endCol] = std::move(squares[startRow][startCol]);
+    squares[end.row][end.column] = std::move(squares[start.row][start.column]);
 
     return true;
 }

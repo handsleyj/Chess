@@ -14,19 +14,13 @@ enum class PieceColour {
     WHITE
 };
 
-struct PiecePosition {
-    int row;
-    int column;
-};
-
 class Piece {
 public:
     Piece(PieceType type, PieceColour colour);
-    PieceType getType();
-    PieceColour getColour();
+    PieceType getType() const;
+    PieceColour getColour() const;
 
 private:
     PieceType type;
-    PiecePosition position;
     PieceColour colour;
 };
