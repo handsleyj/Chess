@@ -121,6 +121,7 @@ void Board::display() {
     std::cout << "    a b c d e f g h\n";
 }
 
+/* Move a piece from one position on the board to another */
 bool Board::movePiece(Coordinate start, Coordinate end) {
     if (squares[start.row][start.column] == nullptr) {
         return false;
@@ -129,4 +130,9 @@ bool Board::movePiece(Coordinate start, Coordinate end) {
     squares[end.row][end.column] = std::move(squares[start.row][start.column]);
 
     return true;
+}
+
+/* Get the piece at a given position on the board */
+Piece* Board::getPieceFromCoordinate(Coordinate coord) {
+    return this->squares[coord.row][coord.column].get();
 }
