@@ -141,3 +141,25 @@ bool Board::movePiece(Coordinate start, Coordinate end) {
 Piece* Board::getPieceFromCoordinate(Coordinate coord) {
     return this->squares[coord.row][coord.column].get();
 }
+
+/* Return true if the destination contains a piece of the same colour */
+bool Board::isFriendlyPiece(Piece *movingPiece, Coordinate dest) {
+    Piece *destinationPiece = this->getPieceFromCoordinate(dest); 
+    
+    if (destinationPiece == nullptr) {
+        return false;
+    }
+    
+    return (movingPiece->getColour() == destinationPiece->getColour());
+}
+
+/* Return true if the destination contains a piece of different colour */
+bool Board::isEnemyPiece(Piece *movingPiece, Coordinate dest) {
+    Piece *destinationPiece = this->getPieceFromCoordinate(dest); 
+    
+    if (destinationPiece == nullptr) {
+        return false;
+    }
+    
+    return (movingPiece->getColour() != destinationPiece->getColour());
+}
