@@ -123,16 +123,33 @@ void Board::display() {
 
 /* Move a piece from one position on the board to another */
 bool Board::movePiece(Coordinate start, Coordinate end) {
-    if (squares[start.row][start.column] == nullptr) {
+    Piece * pieceToMove = this->getPieceFromCoordinate(start);
+
+    if (pieceToMove == nullptr) {
         return false;
     }
 
-    if (squares[start.row][start.column]->canMove(start, end)) {
-        squares[end.row][end.column] = std::move(squares[start.row][start.column]);
-    }
-    else {
+    if (!pieceToMove->canMove(start, end)) {
         return false;
     }
+
+    if (this->isFriendlyPiece(pieceToMove, end)) {
+        return false;
+    }
+
+    if (
+        pieceToMove->getType() == PieceType::ROOK ||
+        pieceToMove->getType() == PieceType::BISHOP ||
+        pieceToMove->getType() == PieceType::QUEEN
+    ) {
+        if (!this->isPathClear(start, end)) {
+            return false;
+        }
+    }
+
+    squares[end.row][end.column] = std::move(squares[start.row][start.column]);
+    
+    squares[end.row][end.column]->setHasMoved(true);
 
     return true;
 }
@@ -162,4 +179,53 @@ bool Board::isEnemyPiece(Piece *movingPiece, Coordinate dest) {
     }
     
     return (movingPiece->getColour() != destinationPiece->getColour());
+}
+
+/* Return true if there are no pieces between two coordinates */
+bool Board::isPathClear(Coordinate start, Coordinate end) {
+    if (start.row == end.row) {
+        /* Left-to-right direction */
+        if (start.column < end.column) {
+            for (int i = start.column+1; i <= end.column-1; i++) {
+                Coordinate pieceToCheck = {start.row, i};
+                if (this->getPieceFromCoordinate(pieceToCheck) != nullptr) {
+                    return false;
+                }
+            }
+        }
+        /* Right-to-left direction */
+        else {
+            for (int i = end.column-1; i >= start.column+1; i--) {
+                Coordinate pieceToCheck = {start.row, i};
+                if (this->getPieceFromCoordinate(pieceToCheck) != nullptr) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    if (start.column == end.column) {
+        /* Top-to-bottom direction*/
+        if (start.row < end.row) {
+            for (int i = start.row+1; i <= end.row-1; i++) {
+                Coordinate pieceToCheck = {i, start.column};
+                if (this->getPieceFromCoordinate(pieceToCheck) != nullptr) {
+                    return false;
+                }
+            }
+        }
+        /* Bottom-to-top direction */
+        else {
+            for (int i = start.row-1; i >= end.row+1; i--) {
+                Coordinate pieceToCheck = {i, start.column};
+                if (this->getPieceFromCoordinate(pieceToCheck) != nullptr) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    return false;
 }

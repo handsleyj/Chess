@@ -22,6 +22,7 @@ public:
     PieceType getType() const;
     PieceColour getColour() const;
     bool canMove(Coordinate start, Coordinate end) const;
+    void setHasMoved(bool val);
 
 private:
     PieceType type;

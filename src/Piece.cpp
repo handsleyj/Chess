@@ -93,3 +93,7 @@ bool Piece::canMove(Coordinate start, Coordinate end) const {
             return false;
     }
 }
+
+void Piece::setHasMoved(bool val) {
+    this->hasMoved = val;
+}
