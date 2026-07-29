@@ -195,7 +195,7 @@ bool Board::isPathClear(Coordinate start, Coordinate end) {
         }
         /* Right-to-left direction */
         else {
-            for (int i = end.column-1; i >= start.column+1; i--) {
+            for (int i = end.column+1; i >= start.column-1; i--) {
                 Coordinate pieceToCheck = {start.row, i};
                 if (this->getPieceFromCoordinate(pieceToCheck) != nullptr) {
                     return false;
@@ -223,6 +223,25 @@ bool Board::isPathClear(Coordinate start, Coordinate end) {
                     return false;
                 }
             }
+        }
+        return true;
+    }
+
+    if (abs(start.row - end.row) == abs(start.column - end.column)) {
+        int rowStep = (end.row > start.row) ? 1 : -1;
+        int columnStep = (end.column > start.column) ? 1 : -1;
+
+        int row = start.row + rowStep;
+        int column = start.column + columnStep;
+
+        while (row != end.row && column != end.column) {
+            Coordinate pieceToCheck = {row, column};
+
+            if (this->getPieceFromCoordinate(pieceToCheck) != nullptr) {
+                return false;
+            }
+            row += rowStep;
+            column += columnStep;
         }
         return true;
     }
