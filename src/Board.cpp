@@ -147,6 +147,12 @@ bool Board::movePiece(Coordinate start, Coordinate end) {
         }
     }
 
+    if (pieceToMove->getType() == PieceType::PAWN) {
+        if (!isPawnMoveLegal(pieceToMove, start, end)) {
+            return false;
+        }
+    }
+
     squares[end.row][end.column] = std::move(squares[start.row][start.column]);
     
     squares[end.row][end.column]->setHasMoved(true);
@@ -195,7 +201,7 @@ bool Board::isPathClear(Coordinate start, Coordinate end) {
         }
         /* Right-to-left direction */
         else {
-            for (int i = end.column+1; i >= start.column-1; i--) {
+            for (int i = start.column-1; i >= end.column+1;  i--) {
                 Coordinate pieceToCheck = {start.row, i};
                 if (this->getPieceFromCoordinate(pieceToCheck) != nullptr) {
                     return false;
@@ -247,4 +253,47 @@ bool Board::isPathClear(Coordinate start, Coordinate end) {
     }
     
     return false;
+}
+
+/* Returns true if a pawn move is legal */
+bool Board::isPawnMoveLegal(Piece *pawn, Coordinate start, Coordinate end) {
+    int rowDiff = start.row - end.row;
+    int columnDiff = abs(start.column - end.column);
+
+    /* White pawns - move up the board*/
+    if (pawn->getColour() == PieceColour::WHITE) {
+        if (columnDiff == 0) {
+            if (this->getPieceFromCoordinate(end) != nullptr) {
+                return false;
+            }
+
+            /* Two-square move for pawns unmoved at start */
+            if (rowDiff == 2) {
+                if (!this->isPathClear(start, end)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /* If move is diagonal, the move must be a take */
+        return this->isEnemyPiece(pawn, end);
+    }
+    /* Black pawns - move down the board */
+    else {
+        if (columnDiff == 0) {
+            if (this->getPieceFromCoordinate(end) != nullptr) {
+                return false;
+            }
+
+            if (rowDiff == -2) {
+                if(!this->isPathClear(start, end)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return this->isEnemyPiece(pawn, end);
+    }
+
 }

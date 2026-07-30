@@ -13,6 +13,7 @@ public:
     bool isFriendlyPiece(Piece *movingPiece, Coordinate dest);
     bool isEnemyPiece(Piece *movingPiece, Coordinate dest);
     bool isPathClear(Coordinate start, Coordinate end);
+    bool isPawnMoveLegal(Piece *pawn, Coordinate start, Coordinate end);
 
 private:
     std::unique_ptr<Piece> squares[8][8];
