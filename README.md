@@ -13,3 +13,18 @@ g++ src/*.cpp -Iinclude -o chessGame
 ```bash
 ./chessGame
 ```
+
+## Compile test files
+
+The following files are for testing only
+
+### Test Board class
+
+To compile from terminal, run:
+```bash
+g++ src/Board.cpp src/Piece.cpp src/Coordinate.cpp tests/test_board.cpp -o test_board
+```
+
+```bash
+./test_board
+```
