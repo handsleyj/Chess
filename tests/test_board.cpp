@@ -5,8 +5,8 @@
 #include "../include/Coordinate.h"
 
 void testPawnMovement();
+void testRookMovement();
 /* TODO */
-// void testRookMovement();
 // void testKnightMovement();
 // void testBishopMovement();
 // void testQueenMovement();
@@ -16,8 +16,8 @@ int main() {
     std::cout << "Running Tests - Board...\n";
 
     testPawnMovement();
+    testRookMovement();
     /* TODO */
-    // testRookMovement();
     // testKnightMovement();
     // testBishopMovement();
     // testQueenMovement();
@@ -180,6 +180,193 @@ void testPawnMovement() {
         assert(board.movePiece(
             toCoordinates("d5"),
             toCoordinates("c4")
+        ));
+    }
+}
+
+void testRookMovement() {
+    
+    /* Rook can move vertically when path is clear */
+    {
+        Board board;
+        /* WHITE */
+        assert(board.movePiece(
+            toCoordinates("a2"),
+            toCoordinates("a4")
+        ));
+        assert(board.movePiece(
+            toCoordinates("a1"),
+            toCoordinates("a3")
+        ));
+
+        /* BLACK */
+        assert(board.movePiece(
+            toCoordinates("h7"),
+            toCoordinates("h5")
+        ));
+        assert(board.movePiece(
+            toCoordinates("h8"),
+            toCoordinates("h6")
+        ));
+    }
+
+    /* Rook can move horizontally when path is clear */
+    {
+        Board board;
+        /* WHITE */
+        assert(board.movePiece(
+            toCoordinates("a2"),
+            toCoordinates("a4")
+        ));
+        assert(board.movePiece(
+            toCoordinates("a1"),
+            toCoordinates("a3")
+        ));
+        assert(board.movePiece(
+            toCoordinates("a3"),
+            toCoordinates("h3")
+        ));
+
+        /* BLACK */
+        assert(board.movePiece(
+            toCoordinates("h7"),
+            toCoordinates("h5")
+        ));
+        assert(board.movePiece(
+            toCoordinates("h8"),
+            toCoordinates("h6")
+        ));
+        assert(board.movePiece(
+            toCoordinates("h6"),
+            toCoordinates("a6")
+        ));
+    }
+
+    /* Rook cannot move diagonally when path is clear */
+    {
+        Board board;
+        /* WHITE */
+        assert(board.movePiece(
+            toCoordinates("a2"),
+            toCoordinates("a4")
+        ));
+        assert(board.movePiece(
+            toCoordinates("a1"),
+            toCoordinates("a2")
+        ));
+        assert(!board.movePiece(
+            toCoordinates("a2"),
+            toCoordinates("d5")
+        ));
+
+        /* BLACK */
+        assert(board.movePiece(
+            toCoordinates("h7"),
+            toCoordinates("h5")
+        ));
+        assert(board.movePiece(
+            toCoordinates("h8"),
+            toCoordinates("h7")
+        ));
+        assert(!board.movePiece(
+            toCoordinates("h7"),
+            toCoordinates("e4")
+        ));
+    }
+
+    /* Rook cannot jump over pieces */
+    {
+        Board board;
+        /* WHITE */
+        assert(board.movePiece(
+            toCoordinates("a2"),
+            toCoordinates("a4")
+        ));
+        assert(!board.movePiece(
+            toCoordinates("a1"),
+            toCoordinates("a5")
+        ));
+
+        /* BLACK */
+        assert(board.movePiece(
+            toCoordinates("h7"),
+            toCoordinates("h5")
+        ));
+        assert(!board.movePiece(
+            toCoordinates("h8"),
+            toCoordinates("h4")
+        ));
+    }
+
+    /* Rook can capture another piece */
+    {
+        Board board;
+        /* WHITE takes black */
+        assert(board.movePiece(
+            toCoordinates("a2"),
+            toCoordinates("a4")
+        ));
+        assert(board.movePiece(
+            toCoordinates("a1"),
+            toCoordinates("a3")
+        ));
+        assert(board.movePiece(
+            toCoordinates("b7"),
+            toCoordinates("b5")
+        ));
+        assert(board.movePiece(
+            toCoordinates("b5"),
+            toCoordinates("b4")
+        ));
+        assert(board.movePiece(
+            toCoordinates("b4"),
+            toCoordinates("b3")
+        ));
+        assert(board.movePiece(
+            toCoordinates("a3"),
+            toCoordinates("b3")
+        ));
+        
+        /* BLACK takes white */
+        assert(board.movePiece(
+            toCoordinates("h7"),
+            toCoordinates("h5")
+        ));
+        assert(board.movePiece(
+            toCoordinates("h8"),
+            toCoordinates("h6")
+        ));
+        assert(board.movePiece(
+            toCoordinates("g2"),
+            toCoordinates("g4")
+        ));
+        assert(board.movePiece(
+            toCoordinates("g4"),
+            toCoordinates("g5")
+        ));
+        assert(board.movePiece(
+            toCoordinates("g5"),
+            toCoordinates("g6")
+        ));
+        assert(board.movePiece(
+            toCoordinates("h6"),
+            toCoordinates("g6")
+        ));
+    }
+
+    /* Rook cannot capture friendly piece */
+    {
+        Board board;
+        /* WHITE */
+        assert(!board.movePiece(
+            toCoordinates("a1"),
+            toCoordinates("b1")
+        ));
+
+        /* BLACK */
+        assert(!board.movePiece(
+            toCoordinates("a8"),
+            toCoordinates("a7")
         ));
     }
 }
