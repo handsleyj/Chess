@@ -28,3 +28,14 @@ g++ src/Board.cpp src/Piece.cpp src/Coordinate.cpp tests/test_board.cpp -o test_
 ```bash
 ./test_board
 ```
+
+### Test Coordinate class
+
+To compile from terminal, run:
+```bash
+g++ src/Coordinate.cpp tests/test_coordinate.cpp -o test_coordinate
+```
+
+```bash
+./test_coordinate
+```
