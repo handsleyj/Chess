@@ -7,8 +7,8 @@
 void testPawnMovement();
 void testRookMovement();
 void testKnightMovement();
+void testBishopMovement();
 /* TODO */
-// void testBishopMovement();
 // void testQueenMovement();
 // void testKingMovement();
 
@@ -18,8 +18,8 @@ int main() {
     testPawnMovement();
     testRookMovement();
     testKnightMovement();
+    testBishopMovement();
     /* TODO */
-    // testBishopMovement();
     // testQueenMovement();
     // testKingMovement();
 
@@ -538,6 +538,162 @@ void testKnightMovement() {
         assert(!board.movePiece(
             toCoordinates("g8"),
             toCoordinates("h6")
+        ));
+    }
+}
+
+void testBishopMovement() {
+
+    /* Bishop can move diagonally */
+    {
+        Board board;
+        assert(board.movePiece(
+            toCoordinates("b2"),
+            toCoordinates("b3")
+        ));
+        assert(board.movePiece(
+            toCoordinates("c1"),
+            toCoordinates("a3")
+        ));
+        assert(board.movePiece(
+            toCoordinates("a3"),
+            toCoordinates("b4")
+        ));
+        assert(board.movePiece(
+            toCoordinates("b4"),
+            toCoordinates("c3")
+        ));
+        assert(board.movePiece(
+            toCoordinates("c3"),
+            toCoordinates("b2")
+        ));
+    }
+
+    /* Bishop cannot move vertically*/
+    {
+        Board board;
+        /* WHITE */
+        assert(board.movePiece(
+            toCoordinates("c2"),
+            toCoordinates("c3")
+        ));
+        assert(!board.movePiece(
+            toCoordinates("c1"),
+            toCoordinates("c2")
+        ));
+
+        /* BLACK */
+        assert(board.movePiece(
+            toCoordinates("f7"),
+            toCoordinates("f6")
+        ));
+        assert(!board.movePiece(
+            toCoordinates("f8"),
+            toCoordinates("f7")
+        ));
+    }
+
+    /* Bishop cannot move horizontally */
+    {
+        Board board;
+        /* WHITE */
+        assert(board.movePiece(
+            toCoordinates("b2"),
+            toCoordinates("b4")
+        ));
+        assert(board.movePiece(
+            toCoordinates("c1"),
+            toCoordinates("a3")
+        ));
+        assert(!board.movePiece(
+            toCoordinates("a3"),
+            toCoordinates("b3")
+        ));
+
+        /* BLACK */
+        assert(board.movePiece(
+            toCoordinates("g7"),
+            toCoordinates("g5")
+        ));
+        assert(board.movePiece(
+            toCoordinates("f8"),
+            toCoordinates("h6")
+        ));
+        assert(!board.movePiece(
+            toCoordinates("h6"),
+            toCoordinates("g6")
+        ));
+    }
+
+    /* Bishop cannot jump over pieces */
+    {
+        Board board;
+        /* WHITE */
+        assert(!board.movePiece(
+            toCoordinates("c1"),
+            toCoordinates("a3")
+        ));
+
+        /* BLACK */
+        assert(!board.movePiece(
+            toCoordinates("f8"),
+            toCoordinates("h6")
+        ));
+    }
+
+    /* Bishop can capture enemy pieces */
+    {
+        Board board;
+        /* WHITE takes black */
+        assert(board.movePiece(
+            toCoordinates("d2"),
+            toCoordinates("d4")
+        ));
+        assert(board.movePiece(
+            toCoordinates("e7"),
+            toCoordinates("e5")
+        ));
+        assert(board.movePiece(
+            toCoordinates("e5"),
+            toCoordinates("e4")
+        ));
+        assert(board.movePiece(
+            toCoordinates("e4"),
+            toCoordinates("e3")
+        ));
+        assert(board.movePiece(
+            toCoordinates("c1"),
+            toCoordinates("e3")
+        ));
+
+        /* BLACK takes white */
+        assert(board.movePiece(
+            toCoordinates("d4"),
+            toCoordinates("d5")
+        ));
+        assert(board.movePiece(
+            toCoordinates("d5"),
+            toCoordinates("d6")
+        ));
+        assert(board.movePiece(
+            toCoordinates("f8"),
+            toCoordinates("d6")
+        ));
+    }
+
+    /* Bishop cannot capture a friendly piece */
+    {
+        Board board;
+        /* WHITE */
+        assert(!board.movePiece(
+            toCoordinates("c1"),
+            toCoordinates("d2")
+        ));
+
+        /* BLACK */
+        assert(!board.movePiece(
+            toCoordinates("f8"),
+            toCoordinates("g7")
         ));
     }
 }
