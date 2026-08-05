@@ -8,8 +8,8 @@ void testPawnMovement();
 void testRookMovement();
 void testKnightMovement();
 void testBishopMovement();
+void testQueenMovement();
 /* TODO */
-// void testQueenMovement();
 // void testKingMovement();
 
 int main() {
@@ -19,8 +19,8 @@ int main() {
     testRookMovement();
     testKnightMovement();
     testBishopMovement();
+    testQueenMovement();
     /* TODO */
-    // testQueenMovement();
     // testKingMovement();
 
     std::cout << "All tests passed\n";
@@ -694,6 +694,169 @@ void testBishopMovement() {
         assert(!board.movePiece(
             toCoordinates("f8"),
             toCoordinates("g7")
+        ));
+    }
+}
+
+void testQueenMovement() {
+
+    /* Queen can move vertically */
+    {
+        Board board;
+        /* WHITE */
+        assert(board.movePiece(
+            toCoordinates("d2"),
+            toCoordinates("d4")
+        ));
+        assert(board.movePiece(
+            toCoordinates("d1"),
+            toCoordinates("d3")
+        ));
+
+        /* BLACK */
+        assert(board.movePiece(
+            toCoordinates("d7"),
+            toCoordinates("d5")
+        ));
+        assert(board.movePiece(
+            toCoordinates("d8"),
+            toCoordinates("d6")
+        ));
+    }
+
+    /* Queen can move horizontally */
+    {
+        Board board;
+        /* WHITE */
+        assert(board.movePiece(
+            toCoordinates("d2"),
+            toCoordinates("d4")
+        ));
+        assert(board.movePiece(
+            toCoordinates("d1"),
+            toCoordinates("d3")
+        ));
+        assert(board.movePiece(
+            toCoordinates("d3"),
+            toCoordinates("b3")
+        ));
+
+        /* BLACK */
+        assert(board.movePiece(
+            toCoordinates("d7"),
+            toCoordinates("d5")
+        ));
+        assert(board.movePiece(
+            toCoordinates("d8"),
+            toCoordinates("d6")
+        ));
+        assert(board.movePiece(
+            toCoordinates("d6"),
+            toCoordinates("f6")
+        ));
+    }
+
+    /* Queen can move diagonally */
+    {
+        Board board;
+        /* WHITE */
+        assert(board.movePiece(
+            toCoordinates("e2"),
+            toCoordinates("e4")
+        ));
+        assert(board.movePiece(
+            toCoordinates("d1"),
+            toCoordinates("f3")
+        ));
+
+        /* BLACK */
+        assert(board.movePiece(
+            toCoordinates("e7"),
+            toCoordinates("e5")
+        ));
+        assert(board.movePiece(
+            toCoordinates("d8"),
+            toCoordinates("f6")
+        ));
+    }
+
+    /* Queen cannot jump over pieces */
+    {
+        Board board;
+        /* WHITE */
+        assert(!board.movePiece(
+            toCoordinates("d1"),
+            toCoordinates("f3")
+        ));
+
+        /* BLACK */
+        assert(!board.movePiece(
+            toCoordinates("d8"),
+            toCoordinates("f6")
+        ));
+    }
+
+    /* Queen can capture enemy pieces */
+    {
+        Board board;
+        /* WHITE takes black */
+        assert(board.movePiece(
+            toCoordinates("f7"),
+            toCoordinates("f5")
+        ));
+        assert(board.movePiece(
+            toCoordinates("f5"),
+            toCoordinates("f4")
+        ));
+        assert(board.movePiece(
+            toCoordinates("f4"),
+            toCoordinates("f3")
+        ));
+        assert(board.movePiece(
+            toCoordinates("f3"),
+            toCoordinates("e2")
+        ));
+        assert(board.movePiece(
+            toCoordinates("d1"),
+            toCoordinates("e2")
+        ));
+
+        /* BLACK takes white */
+        assert(board.movePiece(
+            toCoordinates("e2"),
+            toCoordinates("e4")
+        ));
+        assert(board.movePiece(
+            toCoordinates("e4"),
+            toCoordinates("e5")
+        ));
+        assert(board.movePiece(
+            toCoordinates("e5"),
+            toCoordinates("e6")
+        ));
+        assert(board.movePiece(
+            toCoordinates("e6"),
+            toCoordinates("d7")
+        ));
+        assert(board.movePiece(
+            toCoordinates("d8"),
+            toCoordinates("d7")
+        ));
+    }
+
+    /* Queen cannot capture a friendly piece */
+    {
+        Board board;
+        /* WHITE */
+        assert(!board.movePiece(
+            toCoordinates("d1"),
+            toCoordinates("d2")
+        ));
+
+        /* BLACK */
+        assert(!board.movePiece(
+            toCoordinates("d8"),
+            toCoordinates("d7")
         ));
     }
 }
