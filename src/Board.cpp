@@ -295,5 +295,81 @@ bool Board::isPawnMoveLegal(Piece *pawn, Coordinate start, Coordinate end) {
         }
         return this->isEnemyPiece(pawn, end);
     }
+}
 
+bool Board::isInCheck(PieceColour colour) {
+    Coordinate kingPosition = {-1, -1};
+
+    /* Find the position of the king of the given colour */
+    for (int row = 0; row < 8; row++) {
+        for (int col = 0; col < 8; col++) {
+            Piece *pieceToCheck = this->getPieceFromCoordinate({row, col});
+            
+            /* Skip empty spaces */
+            if (pieceToCheck == nullptr) {
+                continue;
+            }
+
+            if ((pieceToCheck->getColour() == colour) && (pieceToCheck->getType() == PieceType::KING)) {
+                kingPosition = {row, col};
+                break;
+            }
+        }
+
+        if (kingPosition.row != -1) {
+            break;
+        }
+    }
+
+    if (kingPosition.row == -1) {
+        return false;
+    }
+    
+    /* Determine if enemy pieces can attack the king in that position */
+    for (int row = 0; row < 8; row++) {
+        for (int col = 0; col < 8; col++) {
+            Piece *pieceToCheck = this->getPieceFromCoordinate({row, col});
+
+            if (pieceToCheck == nullptr || pieceToCheck->getColour() == colour) {
+                continue;
+            }
+
+            Coordinate piecePosition = {row, col};
+
+            /* Pawn movement different from taking */
+            if (pieceToCheck->getType() == PieceType::PAWN) {
+                int rowDiff = piecePosition.row - kingPosition.row;
+                int columnDiff = abs(piecePosition.column - kingPosition.column);
+
+                if (columnDiff == 1) {
+                    if (pieceToCheck->getColour() == PieceColour::WHITE && rowDiff == 1) {
+                        return true;
+                    }
+
+                    if (pieceToCheck->getColour() == PieceColour::BLACK && rowDiff == -1) {
+                        return true;
+                    }
+                }
+                continue;
+            }
+
+            /* Check if piece can reach king*/
+            if (!pieceToCheck->canMove(piecePosition, kingPosition)) {
+                continue;
+            }
+
+            /* Rook, bishop, queen cannot jump over pieces */
+            if (
+                pieceToCheck->getType() == PieceType::ROOK ||
+                pieceToCheck->getType() == PieceType::BISHOP || 
+                pieceToCheck->getType() == PieceType::QUEEN
+            ) {
+                if (!this->isPathClear(piecePosition, kingPosition)) {
+                    continue;
+                }
+            }
+            return true;
+        }
+    }
+    return false;
 }
