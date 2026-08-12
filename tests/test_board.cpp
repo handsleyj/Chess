@@ -10,6 +10,7 @@ void testKnightMovement();
 void testBishopMovement();
 void testQueenMovement();
 void testKingMovement();
+void testCheck();
 
 int main() {
     std::cout << "Running Tests - Board...\n";
@@ -20,6 +21,7 @@ int main() {
     testBishopMovement();
     testQueenMovement();
     testKingMovement();
+    testCheck();
 
     std::cout << "All tests passed\n";
 
@@ -1035,5 +1037,122 @@ void testKingMovement() {
             toCoordinates("e8"),
             toCoordinates("e7")
         ));
+    }
+}
+
+void testCheck() {
+
+    /* Neither king is in check initially */
+    {
+        Board board;
+        assert(!board.isInCheck(PieceColour::WHITE));
+        assert(!board.isInCheck(PieceColour::BLACK));
+    }
+
+    /* Pawn puts king in check */
+    {
+        Board board;
+        board.clearBoard();
+        board.placePiece(
+            toCoordinates("e4"),
+            PieceType::KING,
+            PieceColour::WHITE
+        );
+        board.placePiece(
+            toCoordinates("d5"),
+            PieceType::PAWN,
+            PieceColour::BLACK
+        );
+        assert(board.isInCheck(PieceColour::WHITE));
+    }
+
+    /* Rook puts king in check */
+    {
+        Board board;
+        board.clearBoard();
+        board.placePiece(
+            toCoordinates("e4"),
+            PieceType::KING,
+            PieceColour::WHITE
+        );
+        board.placePiece(
+            toCoordinates("e8"),
+            PieceType::ROOK,
+            PieceColour::BLACK
+        );
+        assert(board.isInCheck(PieceColour::WHITE));
+    }
+
+    /* Knight puts king in check */
+    {
+        Board board;
+        board.clearBoard();
+        board.placePiece(
+            toCoordinates("e4"),
+            PieceType::KING,
+            PieceColour::WHITE
+        );
+        board.placePiece(
+            toCoordinates("f6"),
+            PieceType::KNIGHT,
+            PieceColour::BLACK
+        );
+        assert(board.isInCheck(PieceColour::WHITE));
+    }
+
+    /* Bishop puts king in check */
+    {
+        Board board;
+        board.clearBoard();
+        board.placePiece(
+            toCoordinates("e4"),
+            PieceType::KING,
+            PieceColour::WHITE
+        );
+        board.placePiece(
+            toCoordinates("b7"),
+            PieceType::BISHOP,
+            PieceColour::BLACK
+        );
+        assert(board.isInCheck(PieceColour::WHITE));
+    }
+
+    /* Queen puts king in check */
+    {
+        Board board;
+        board.clearBoard();
+        board.placePiece(
+            toCoordinates("e4"),
+            PieceType::KING,
+            PieceColour::WHITE
+        );
+        board.placePiece(
+            toCoordinates("e8"),
+            PieceType::QUEEN,
+            PieceColour::BLACK
+        );
+        assert(board.isInCheck(PieceColour::WHITE));
+    }
+
+    /* King cannot be in check if piece is in the way of enemy piece */
+    {
+        Board board;
+        board.clearBoard();
+        board.placePiece(
+            toCoordinates("e4"),
+            PieceType::KING,
+            PieceColour::WHITE
+        );
+        board.placePiece(
+            toCoordinates("e8"),
+            PieceType::ROOK,
+            PieceColour::BLACK
+        );
+        board.placePiece(
+            toCoordinates("e6"),
+            PieceType::PAWN,
+            PieceColour::WHITE
+        );
+        assert(!board.isInCheck(PieceColour::WHITE));
     }
 }

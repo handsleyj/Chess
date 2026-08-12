@@ -373,3 +373,30 @@ bool Board::isInCheck(PieceColour colour) {
     }
     return false;
 }
+
+/* -------------------------------------------------------------------- */
+
+/* Remove all piece from the board. 
+ * FOR TESTING PURPOSES ONLY 
+*/
+void Board::clearBoard() {
+    for (int row = 0; row < 8; row++) {
+        for (int col = 0; col < 8; col++) {
+            this->squares[row][col] = nullptr;
+        }
+    }
+}
+
+/* Place a piece and a given coordinate. 
+ * FOR TESTING PURPOSES ONLY 
+*/
+void Board::placePiece(Coordinate position, PieceType type, PieceColour colour) {
+    this->squares[position.row][position.column] = std::make_unique<Piece>(type, colour);
+}
+
+/* Force a piece to move without checking for move legality.
+ * FOR TESTING PURPOSES ONLY 
+*/
+void Board::forceMovePiece(Coordinate start, Coordinate end) {
+    this->squares[end.row][end.column] = std::move(this->squares[start.row][start.column]);
+}

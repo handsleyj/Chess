@@ -16,6 +16,12 @@ public:
     bool isPawnMoveLegal(Piece *pawn, Coordinate start, Coordinate end);
     bool isInCheck(PieceColour colour);
 
+    /* Below, only for testing purposes */
+    void clearBoard();
+    void placePiece(Coordinate position, PieceType type, PieceColour colour);
+    void forceMovePiece(Coordinate start, Coordinate end);
+    /* -------------------------------- */
+
 private:
     std::unique_ptr<Piece> squares[8][8];
 };
