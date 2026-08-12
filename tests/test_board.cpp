@@ -11,6 +11,7 @@ void testBishopMovement();
 void testQueenMovement();
 void testKingMovement();
 void testCheck();
+void testWouldBeCheck();
 
 int main() {
     std::cout << "Running Tests - Board...\n";
@@ -22,6 +23,7 @@ int main() {
     testQueenMovement();
     testKingMovement();
     testCheck();
+    testWouldBeCheck();
 
     std::cout << "All tests passed\n";
 
@@ -1154,5 +1156,31 @@ void testCheck() {
             PieceColour::WHITE
         );
         assert(!board.isInCheck(PieceColour::WHITE));
+    }
+}
+
+void testWouldBeCheck() {
+    {
+        Board board;
+        board.clearBoard();
+        board.placePiece(
+            toCoordinates("e8"),
+            PieceType::ROOK,
+            PieceColour::BLACK
+        );
+        board.placePiece(
+            toCoordinates("e4"),
+            PieceType::KING,
+            PieceColour::WHITE
+        );
+        board.placePiece(
+            toCoordinates("e1"),
+            PieceType::ROOK,
+            PieceColour::WHITE
+        );
+        assert(!board.movePiece(
+            toCoordinates("e1"),
+            toCoordinates("a1")
+        ));
     }
 }
