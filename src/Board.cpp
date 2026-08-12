@@ -153,6 +153,10 @@ bool Board::movePiece(Coordinate start, Coordinate end) {
         }
     }
 
+    if (this->wouldBeInCheck(start, end)) {
+        return false;
+    }
+
     squares[end.row][end.column] = std::move(squares[start.row][start.column]);
     
     squares[end.row][end.column]->setHasMoved(true);
@@ -372,6 +376,25 @@ bool Board::isInCheck(PieceColour colour) {
         }
     }
     return false;
+}
+
+/* Returns true if a move would put the current colour's king in check */
+bool Board::wouldBeInCheck(Coordinate start, Coordinate end) {
+    PieceColour currentColour = this->getPieceFromCoordinate(start)->getColour();
+    std::unique_ptr<Piece> capturedPiece = std::move(this->squares[end.row][end.column]);
+    
+    /* Move piece temporarily */
+    this->squares[end.row][end.column] = std::move(this->squares[start.row][start.column]);
+
+    /* Check if current colour's king is in check */
+    bool inCheck = this->isInCheck(currentColour);
+
+    /* Undo move */
+    this->squares[start.row][start.column] = std::move(this->squares[end.row][end.column]);
+
+    this->squares[end.row][end.column] = std::move(capturedPiece);
+
+    return inCheck;
 }
 
 /* -------------------------------------------------------------------- */

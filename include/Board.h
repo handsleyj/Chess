@@ -15,6 +15,7 @@ public:
     bool isPathClear(Coordinate start, Coordinate end);
     bool isPawnMoveLegal(Piece *pawn, Coordinate start, Coordinate end);
     bool isInCheck(PieceColour colour);
+    bool wouldBeInCheck(Coordinate start, Coordinate end);
 
     /* Below, only for testing purposes */
     void clearBoard();
