@@ -57,6 +57,11 @@ void Game::run() {
                 break;
             }
         }
+
+        if (board.isStalemate(opponentColour)) {
+            std::cout << "STALEMATE\n";
+            break;
+        }
     }
 }
 

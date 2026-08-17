@@ -441,6 +441,39 @@ bool Board::isCheckmate(PieceColour colour) {
     return true;
 }
 
+/* Return true if in stalemate - not in check & no legal moves available */
+bool Board::isStalemate(PieceColour colour) {
+    if (this->isInCheck(colour)) {
+        return false;
+    }
+
+    for (int row = 0; row < 8; row++) {
+        for (int col = 0; col < 8; col++) {
+            Piece *pieceToCheck = this->getPieceFromCoordinate({row, col});
+            
+            if (pieceToCheck == nullptr) {
+                continue;
+            }
+
+            if (pieceToCheck->getColour() != colour) {
+                continue;
+            }
+
+            Coordinate start = {row, col};
+            for (int endRow = 0; endRow < 8; endRow++) {
+                for (int endCol = 0; endCol < 8; endCol++) {
+                    Coordinate end = {endRow, endCol};
+
+                    if (this->isLegalMove(start, end)) {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+    return true;
+}
+
 /* -------------------------------------------------------------------- */
 
 /* Remove all piece from the board. 

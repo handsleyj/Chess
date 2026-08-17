@@ -18,6 +18,7 @@ public:
     bool isInCheck(PieceColour colour);
     bool wouldBeInCheck(Coordinate start, Coordinate end);
     bool isCheckmate(PieceColour colour);
+    bool isStalemate(PieceColour colour);
 
     /* Below, only for testing purposes */
     void clearBoard();
