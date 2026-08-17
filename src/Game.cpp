@@ -47,6 +47,16 @@ void Game::run() {
         }
 
         this->changeTurn();
+
+        PieceColour opponentColour = (this->currentTurn == Turn::WHITE) ? PieceColour::WHITE : PieceColour::BLACK;
+        if (board.isInCheck(opponentColour)) {
+            std::cout << "CHECK\n";
+
+            if (board.isCheckmate(opponentColour)) {
+                std::cout << "CHECKMATE\n";
+                break;
+            }
+        }
     }
 }
 

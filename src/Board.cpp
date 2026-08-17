@@ -123,37 +123,7 @@ void Board::display() {
 
 /* Move a piece from one position on the board to another */
 bool Board::movePiece(Coordinate start, Coordinate end) {
-    Piece * pieceToMove = this->getPieceFromCoordinate(start);
-
-    if (pieceToMove == nullptr) {
-        return false;
-    }
-
-    if (!pieceToMove->canMove(start, end)) {
-        return false;
-    }
-
-    if (this->isFriendlyPiece(pieceToMove, end)) {
-        return false;
-    }
-
-    if (
-        pieceToMove->getType() == PieceType::ROOK ||
-        pieceToMove->getType() == PieceType::BISHOP ||
-        pieceToMove->getType() == PieceType::QUEEN
-    ) {
-        if (!this->isPathClear(start, end)) {
-            return false;
-        }
-    }
-
-    if (pieceToMove->getType() == PieceType::PAWN) {
-        if (!isPawnMoveLegal(pieceToMove, start, end)) {
-            return false;
-        }
-    }
-
-    if (this->wouldBeInCheck(start, end)) {
+    if(!this->isLegalMove(start, end)) {
         return false;
     }
 
@@ -378,6 +348,45 @@ bool Board::isInCheck(PieceColour colour) {
     return false;
 }
 
+/* Returns true if a move is legal for a given piece */
+bool Board::isLegalMove(Coordinate start, Coordinate end) {
+    Piece *pieceToMove = this->getPieceFromCoordinate(start);
+
+    if (pieceToMove == nullptr) {
+        return false;
+    }
+
+    if (!pieceToMove->canMove(start, end)) {
+        return false;
+    }
+
+    if (this->isFriendlyPiece(pieceToMove, end)) {
+        return false;
+    }
+
+    if (
+        pieceToMove->getType() == PieceType::ROOK ||
+        pieceToMove->getType() == PieceType::BISHOP ||
+        pieceToMove->getType() == PieceType::QUEEN
+    ) {
+        if (!this->isPathClear(start, end)) {
+            return false;
+        }
+    }
+
+    if (pieceToMove->getType() == PieceType::PAWN) {
+        if (!this->isPawnMoveLegal(pieceToMove, start, end)) {
+            return false;
+        }
+    }
+
+    if (this->wouldBeInCheck(start, end)) {
+        return false;
+    }
+
+    return true;
+}
+
 /* Returns true if a move would put the current colour's king in check */
 bool Board::wouldBeInCheck(Coordinate start, Coordinate end) {
     PieceColour currentColour = this->getPieceFromCoordinate(start)->getColour();
@@ -395,6 +404,41 @@ bool Board::wouldBeInCheck(Coordinate start, Coordinate end) {
     this->squares[end.row][end.column] = std::move(capturedPiece);
 
     return inCheck;
+}
+
+/* Returns true if the given colour is in checkmate */
+bool Board::isCheckmate(PieceColour colour) {
+    if (!this->isInCheck(colour)) {
+        return false;
+    }
+
+    for (int row = 0; row < 8; row++) {
+        for (int col = 0; col < 8; col++) {
+            Piece *pieceToCheck = this->getPieceFromCoordinate({row, col}); 
+            
+            if (pieceToCheck == nullptr) {
+                continue;
+            }
+
+            if (pieceToCheck->getColour() != colour) {
+                continue;
+            }
+
+            Coordinate start = {row, col};
+            /* Check if there is a legal move for this piece */
+            for (int endRow = 0; endRow < 8; endRow++) {
+                for (int endCol = 0; endCol < 8; endCol++) {
+                    Coordinate end = {endRow, endCol};
+
+                    if (this->isLegalMove(start, end)) {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+    /* If there are no legal moves remaining, and king is in check, they have been checkmated */
+    return true;
 }
 
 /* -------------------------------------------------------------------- */

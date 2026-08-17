@@ -14,8 +14,10 @@ public:
     bool isEnemyPiece(Piece *movingPiece, Coordinate dest);
     bool isPathClear(Coordinate start, Coordinate end);
     bool isPawnMoveLegal(Piece *pawn, Coordinate start, Coordinate end);
+    bool isLegalMove(Coordinate start, Coordinate end);
     bool isInCheck(PieceColour colour);
     bool wouldBeInCheck(Coordinate start, Coordinate end);
+    bool isCheckmate(PieceColour colour);
 
     /* Below, only for testing purposes */
     void clearBoard();
