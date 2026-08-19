@@ -20,6 +20,7 @@ add_executable(
     src/Board.cpp
     src/Piece.cpp
     src/Coordinate.cpp
+    src/Renderer.cpp
 )
 target_include_directories(CMakeChess PRIVATE include)
 target_compile_features(CMakeChess PRIVATE cxx_std_17)

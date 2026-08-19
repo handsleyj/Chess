@@ -1,6 +1,6 @@
 # Chess Game
 
-A chess game written in C++.
+A chess game written in C++ and rendered using SFML graphics.
 
 ## Compilation
 

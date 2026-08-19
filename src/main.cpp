@@ -1,9 +1,14 @@
 #include "../include/Game.h"
+#include "../include/Renderer.h"
 
 int main() {
-    Game game;
+    Renderer renderer;
+    renderer.run();
 
-    game.run();
+    /* TODO: Uncomment */
+    // Game game;
+
+    // game.run();
 
     return 0;
 }
