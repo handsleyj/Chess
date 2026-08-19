@@ -4,15 +4,26 @@ A chess game written in C++.
 
 ## Compilation
 
-To compile the program from the terminal, run:
+### Option 1 - compile with CMake:
 
-```bash
-g++ src/*.cpp -Iinclude -o chessGame
-```
+1. Build the CMakeChess file.
 
-```bash
-./chessGame
-```
+2. Execute the built file by typing into the terminal:
+    ```bash 
+    .\build\bin\CMakeChess.exe 
+    ```
+
+### Option 2 - compile using GNU:
+
+1. In the terminal, compile the executable:
+    ```bash
+    g++ src/*.cpp -Iinclude -o chessGame
+    ```
+
+2. Execute the compiled ```.exe``` file:
+    ```bash
+    ./chessGame
+    ```
 
 ## Compile test files
 
@@ -20,22 +31,25 @@ The following files are for testing only
 
 ### Test Board class
 
-To compile from terminal, run:
-```bash
-g++ src/Board.cpp src/Piece.cpp src/Coordinate.cpp tests/test_board.cpp -o test_board
-```
+1. In the terminal, compile the executable:
+    ```bash
+    g++ src/Board.cpp src/Piece.cpp src/Coordinate.cpp tests/test_board.cpp -o test_board
+    ```
 
-```bash
-./test_board
-```
+2. Execute the compiled ```.exe``` file:
+    ```bash
+    ./test_board
+    ```
 
 ### Test Coordinate class
 
-To compile from terminal, run:
-```bash
-g++ src/Coordinate.cpp tests/test_coordinate.cpp -o test_coordinate
-```
+1. In the terminal, compile the executable:
+    ```bash
+    g++ src/Coordinate.cpp tests/test_coordinate.cpp -o test_coordinate
+    ```
 
-```bash
-./test_coordinate
-```
+2. Execute the ```.exe``` file:
+    ```bash
+    ./test_coordinate
+    ```
+

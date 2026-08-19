@@ -13,8 +13,19 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(CMakeChess src/main.cpp)
+add_executable(
+    CMakeChess 
+    src/main.cpp
+    src/Game.cpp
+    src/Board.cpp
+    src/Piece.cpp
+    src/Coordinate.cpp
+)
+target_include_directories(CMakeChess PRIVATE include)
 target_compile_features(CMakeChess PRIVATE cxx_std_17)
 target_link_libraries(CMakeChess PRIVATE SFML::Graphics)
 
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT CmakeChess)
+set_property(
+    DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} 
+    PROPERTY VS_STARTUP_PROJECT CMakeChess
+)
