@@ -8,6 +8,8 @@ Game::Game() {
 
 /* Run the main gameplay loop */
 void Game::run() {
+    renderer.run(board);
+
     while (true) {
         board.display();
         std::string from, to;

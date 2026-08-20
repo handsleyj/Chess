@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Board.h"
+#include "Renderer.h"
 
 enum class Turn {
     WHITE, 
@@ -17,4 +18,5 @@ public:
 private:
     Board board;
     Turn currentTurn;
+    Renderer renderer;
 };
