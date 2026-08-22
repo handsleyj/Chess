@@ -17,6 +17,22 @@ void Renderer::run(const Board &board) {
             if (event->is<sf::Event::Closed>()) {
                 this->window.close();
             }
+
+            /* If the window is resized, reposition visual elements */
+            if (event->is<sf::Event::Resized>()) {
+                const auto &resized = event->getIf<sf::Event::Resized>();
+                sf::View view {
+                    sf::FloatRect(
+                        {0.0f, 0.0f},
+                        {
+                            static_cast<float>(resized->size.x),
+                            static_cast<float>(resized->size.y)
+                        }
+                    )
+                };
+
+                this->window.setView(view);
+            }
         }
 
         this->window.clear(this->bgColour);
