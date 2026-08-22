@@ -9,7 +9,7 @@
 
 class Renderer {
 public:
-    Renderer();
+    Renderer(unsigned int windowSize = 800);
     void run(const Board &board);
     void drawBoard();
 

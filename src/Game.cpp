@@ -2,8 +2,10 @@
 #include "../include/Coordinate.h"
 #include <iostream>
 
-Game::Game() {
-    this->currentTurn = Turn::WHITE;
+Game::Game() 
+    : renderer(800),
+      currentTurn(Turn::WHITE)
+{
 }
 
 /* Run the main gameplay loop */
