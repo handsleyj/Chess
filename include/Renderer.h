@@ -18,4 +18,7 @@ private:
     sf::Color bgColour;
     sf::Color lightSquareColour;
     sf::Color darkSquareColour;
+
+    sf::Texture whiteSquareTexture;
+    sf::Texture blackSquareTexture;
 };
