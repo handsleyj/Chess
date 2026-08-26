@@ -10,8 +10,10 @@
 class Renderer {
 public:
     Renderer(unsigned int windowSize = 800);
-    void run(const Board &board);
+    void run(Board &board);
     void drawBoard();
+    void drawPieces(Board &board);
+    sf::Vector2f boardToScreen(int row, int col) const;
 
 private:
     sf::RenderWindow window;
@@ -21,4 +23,7 @@ private:
 
     sf::Texture whiteSquareTexture;
     sf::Texture blackSquareTexture;
+
+    sf::Texture whitePawnTexture;
+    sf::Texture blackPawnTexture;
 };

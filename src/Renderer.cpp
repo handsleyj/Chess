@@ -6,16 +6,26 @@ Renderer::Renderer(unsigned int windowSize)
       lightSquareColour(200, 200, 200),
       darkSquareColour(20, 20, 20)
 {
-    if (!whiteSquareTexture.loadFromFile("assets/white_square.png")) {
-        throw std::runtime_error("Failed to load assets/white_square.png");
+    /* Load SQUARES .pngs */
+    if (!whiteSquareTexture.loadFromFile("assets/white/square.png")) {
+        throw std::runtime_error("Failed to load assets/white/square.png");
     }
 
-    if(!blackSquareTexture.loadFromFile("assets/black_square.png")) {
-        throw std::runtime_error("Failed to load assets/black_sqaure.png");
+    if(!blackSquareTexture.loadFromFile("assets/black/square.png")) {
+        throw std::runtime_error("Failed to load assets/black/sqaure.png");
+    }
+
+    /* Load PAWNS .pngs */
+    if (!whitePawnTexture.loadFromFile("assets/white/pawn.png")) {
+        throw std::runtime_error("Failed to load assets/white/pawn.png");
+    }
+
+    if (!blackPawnTexture.loadFromFile("assets/black/pawn.png")) {
+        throw std::runtime_error("Failed to load assets/black/pawn.png");
     }
 }
 
-void Renderer::run(const Board &board) {
+void Renderer::run(Board &board) {
     this->window.setVerticalSyncEnabled(true);
 
     while (this->window.isOpen()) {
@@ -44,6 +54,7 @@ void Renderer::run(const Board &board) {
 
         this->window.clear(this->bgColour);
         this->drawBoard();
+        this->drawPieces(board);
         this->window.display();
     }
 } 
@@ -51,9 +62,6 @@ void Renderer::run(const Board &board) {
 void Renderer::drawBoard() {
     sf::RectangleShape square;
     square.setSize({SQUARE_SIZE, SQUARE_SIZE});
-
-    float xPadding = (this->window.getSize().x - (BOARD_DIMENSION * SQUARE_SIZE)) / 2.0f;
-    float yPadding = (this->window.getSize().y - (BOARD_DIMENSION * SQUARE_SIZE)) / 2.0f;
 
     for (int row = 0; row < BOARD_DIMENSION; row++) {
         for (int col = 0; col < BOARD_DIMENSION; col++) {
@@ -65,12 +73,44 @@ void Renderer::drawBoard() {
                 square.setTexture(&this->blackSquareTexture);
             }
 
-            square.setPosition({
-                xPadding + (col * SQUARE_SIZE),
-                yPadding + (row * SQUARE_SIZE)
-            });
+            square.setPosition(this->boardToScreen(row, col));
 
             this->window.draw(square);
         }
     }
+}
+
+void Renderer::drawPieces(Board &board) {
+    for (int row = 0; row < BOARD_DIMENSION; row++) {
+        for (int col = 0; col < BOARD_DIMENSION; col++) {
+            Piece *pieceToDraw = board.getPieceFromCoordinate({row, col});
+
+            if (pieceToDraw == nullptr) {
+                continue;
+            }
+
+            switch (pieceToDraw->getType()) {
+                case PieceType::PAWN: {
+                    sf::Sprite pawn(
+                        (pieceToDraw->getColour() == PieceColour::WHITE) ? this->whitePawnTexture : this->blackPawnTexture
+                    );
+                    pawn.setPosition(this->boardToScreen(row, col));
+                    this->window.draw(pawn);
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+sf::Vector2f Renderer::boardToScreen(int row, int col) const {
+    float xPadding = (this->window.getSize().x - (BOARD_DIMENSION * SQUARE_SIZE)) / 2.0f;
+    float yPadding = (this->window.getSize().y - (BOARD_DIMENSION * SQUARE_SIZE)) / 2.0f;
+    
+    return {
+        xPadding + (col * SQUARE_SIZE),
+        yPadding + (row * SQUARE_SIZE)
+    };
 }
