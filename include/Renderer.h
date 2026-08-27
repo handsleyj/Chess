@@ -29,4 +29,7 @@ private:
 
     sf::Texture whiteRookTexture;
     sf::Texture blackRookTexture;
+
+    sf::Texture whiteKnightTexture;
+    sf::Texture blackKnightTexture;
 };

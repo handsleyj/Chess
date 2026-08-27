@@ -6,7 +6,7 @@ Renderer::Renderer(unsigned int windowSize)
       lightSquareColour(200, 200, 200),
       darkSquareColour(20, 20, 20)
 {
-    /* Load SQUARES .pngs */
+    /* Load SQUARES .pngs ------------------------------------------------ */
     if (!whiteSquareTexture.loadFromFile("assets/white/square.png")) {
         throw std::runtime_error("Failed to load assets/white/square.png");
     }
@@ -15,7 +15,7 @@ Renderer::Renderer(unsigned int windowSize)
         throw std::runtime_error("Failed to load assets/black/sqaure.png");
     }
 
-    /* Load PAWNS .pngs */
+    /* Load PAWNS .pngs ------------------------------------------------ */
     if (!whitePawnTexture.loadFromFile("assets/white/pawn.png")) {
         throw std::runtime_error("Failed to load assets/white/pawn.png");
     }
@@ -24,12 +24,22 @@ Renderer::Renderer(unsigned int windowSize)
         throw std::runtime_error("Failed to load assets/black/pawn.png");
     }
 
+    /* Load ROOKS .pngs ------------------------------------------------ */
     if (!whiteRookTexture.loadFromFile("assets/white/rook.png")) {
         throw std::runtime_error("Failed to load assets/white/rook.png");
     }
 
     if (!blackRookTexture.loadFromFile("assets/black/rook.png")) {
         throw std::runtime_error("Failed to load assets/black/rook.png");
+    }
+
+    /* Load KNIGHTS .pngs ------------------------------------------------ */
+    if (!whiteKnightTexture.loadFromFile("assets/white/knight.png")) {
+        throw std::runtime_error("Failed to load assets/white/knight.png");
+    }
+
+    if (!blackKnightTexture.loadFromFile("assets/black/knight.png")) {
+        throw std::runtime_error("Failed to load assets/black/knight.png");
     }
 }
 
@@ -112,6 +122,14 @@ void Renderer::drawPieces(Board &board) {
                     );
                     rook.setPosition(this->boardToScreen(row, col));
                     this->window.draw(rook);
+                    break;
+                }
+                case PieceType::KNIGHT: {
+                    sf::Sprite knight(
+                        (pieceToDraw->getColour() == PieceColour::WHITE) ? this->whiteKnightTexture : this->blackKnightTexture
+                    );
+                    knight.setPosition(this->boardToScreen(row, col));
+                    this->window.draw(knight);
                     break;
                 }
                 default:
