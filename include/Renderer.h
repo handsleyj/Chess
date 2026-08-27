@@ -26,4 +26,7 @@ private:
 
     sf::Texture whitePawnTexture;
     sf::Texture blackPawnTexture;
+
+    sf::Texture whiteRookTexture;
+    sf::Texture blackRookTexture;
 };

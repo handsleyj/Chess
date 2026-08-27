@@ -23,6 +23,14 @@ Renderer::Renderer(unsigned int windowSize)
     if (!blackPawnTexture.loadFromFile("assets/black/pawn.png")) {
         throw std::runtime_error("Failed to load assets/black/pawn.png");
     }
+
+    if (!whiteRookTexture.loadFromFile("assets/white/rook.png")) {
+        throw std::runtime_error("Failed to load assets/white/rook.png");
+    }
+
+    if (!blackRookTexture.loadFromFile("assets/black/rook.png")) {
+        throw std::runtime_error("Failed to load assets/black/rook.png");
+    }
 }
 
 void Renderer::run(Board &board) {
@@ -96,6 +104,14 @@ void Renderer::drawPieces(Board &board) {
                     );
                     pawn.setPosition(this->boardToScreen(row, col));
                     this->window.draw(pawn);
+                    break;
+                }
+                case PieceType::ROOK: {
+                    sf::Sprite rook(
+                        (pieceToDraw->getColour() == PieceColour::WHITE) ? this->whiteRookTexture : this->blackRookTexture
+                    );
+                    rook.setPosition(this->boardToScreen(row, col));
+                    this->window.draw(rook);
                     break;
                 }
                 default:
