@@ -32,4 +32,7 @@ private:
 
     sf::Texture whiteKnightTexture;
     sf::Texture blackKnightTexture;
+
+    sf::Texture whiteBishopTexture;
+    sf::Texture blackBishopTexture;
 };

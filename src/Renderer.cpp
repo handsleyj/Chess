@@ -41,6 +41,15 @@ Renderer::Renderer(unsigned int windowSize)
     if (!blackKnightTexture.loadFromFile("assets/black/knight.png")) {
         throw std::runtime_error("Failed to load assets/black/knight.png");
     }
+
+    /* Load BISHOPS .pngs ------------------------------------------------ */
+    if (!whiteBishopTexture.loadFromFile("assets/white/bishop.png")) {
+        throw std::runtime_error("Failed to load assets/white/bishop.png");
+    }
+    
+    if (!blackBishopTexture.loadFromFile("assets/black/bishop.png")) {
+        throw std::runtime_error("Failed to load assets/black/bishop.png");
+    }
 }
 
 void Renderer::run(Board &board) {
@@ -130,6 +139,14 @@ void Renderer::drawPieces(Board &board) {
                     );
                     knight.setPosition(this->boardToScreen(row, col));
                     this->window.draw(knight);
+                    break;
+                }
+                case PieceType::BISHOP: {
+                    sf::Sprite bishop(
+                        (pieceToDraw->getColour() == PieceColour::WHITE) ? this->whiteBishopTexture : this->blackBishopTexture
+                    );
+                    bishop.setPosition(this->boardToScreen(row, col));
+                    this->window.draw(bishop);
                     break;
                 }
                 default:
