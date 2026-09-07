@@ -46,9 +46,18 @@ Renderer::Renderer(unsigned int windowSize)
     if (!whiteBishopTexture.loadFromFile("assets/white/bishop.png")) {
         throw std::runtime_error("Failed to load assets/white/bishop.png");
     }
-    
+
     if (!blackBishopTexture.loadFromFile("assets/black/bishop.png")) {
         throw std::runtime_error("Failed to load assets/black/bishop.png");
+    }
+
+    /* Load QUEENS .pngs ------------------------------------------------ */
+    if (!whiteQueenTexture.loadFromFile("assets/white/queen.png")) {
+        throw std::runtime_error("Failed to load assets/white/bishop.png");
+    }
+
+    if (!blackQueenTexture.loadFromFile("assets/black/queen.png")) {
+        throw std::runtime_error("Failed to load assets/black/queen.png");
     }
 }
 
@@ -147,6 +156,14 @@ void Renderer::drawPieces(Board &board) {
                     );
                     bishop.setPosition(this->boardToScreen(row, col));
                     this->window.draw(bishop);
+                    break;
+                }
+                case PieceType::QUEEN: {
+                    sf::Sprite queen(
+                        (pieceToDraw->getColour() == PieceColour::WHITE) ? this->whiteQueenTexture : this->blackQueenTexture
+                    );
+                    queen.setPosition(this->boardToScreen(row, col));
+                    this->window.draw(queen);
                     break;
                 }
                 default:

@@ -35,4 +35,7 @@ private:
 
     sf::Texture whiteBishopTexture;
     sf::Texture blackBishopTexture;
+
+    sf::Texture whiteQueenTexture;
+    sf::Texture blackQueenTexture;
 };
