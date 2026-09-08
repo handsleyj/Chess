@@ -38,4 +38,7 @@ private:
 
     sf::Texture whiteQueenTexture;
     sf::Texture blackQueenTexture;
+
+    sf::Texture whiteKingTexture;
+    sf::Texture blackKingTexture;
 };

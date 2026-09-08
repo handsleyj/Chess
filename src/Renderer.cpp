@@ -59,6 +59,15 @@ Renderer::Renderer(unsigned int windowSize)
     if (!blackQueenTexture.loadFromFile("assets/black/queen.png")) {
         throw std::runtime_error("Failed to load assets/black/queen.png");
     }
+
+    /* Load KINGS .pngs ------------------------------------------------ */
+    if (!whiteKingTexture.loadFromFile("assets/white/king.png")) {
+        throw std::runtime_error("Failed to load assets/white/king.png");
+    }
+
+    if (!blackKingTexture.loadFromFile("assets/black/king.png")) {
+        throw std::runtime_error("Failed to load assets/black/king.png");
+    }
 }
 
 void Renderer::run(Board &board) {
@@ -164,6 +173,14 @@ void Renderer::drawPieces(Board &board) {
                     );
                     queen.setPosition(this->boardToScreen(row, col));
                     this->window.draw(queen);
+                    break;
+                }
+                case PieceType::KING: {
+                    sf::Sprite king (
+                        (pieceToDraw->getColour() == PieceColour::WHITE) ? this->whiteKingTexture : this->blackKingTexture
+                    );
+                    king.setPosition(this->boardToScreen(row, col));
+                    this->window.draw(king);
                     break;
                 }
                 default:
