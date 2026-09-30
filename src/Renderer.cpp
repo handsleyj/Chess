@@ -80,6 +80,41 @@ void Renderer::run(Board &board) {
                 this->window.close();
             }
 
+            /* If the mouse is pressed */
+            if (const auto *mousePressed = event->getIf<sf::Event::MouseButtonPressed>()) {
+                if (mousePressed->button == sf::Mouse::Button::Left) {
+                    sf::Vector2i mousePosition = sf::Mouse::getPosition(this->window);
+
+                    Coordinate mouseCoordinate = this->screenToBoard(mousePosition);
+
+                    Piece *pieceToMove = board.getPieceFromCoordinate(mouseCoordinate);
+
+                    if (pieceToMove != nullptr) {
+                        this->draggedPiece = pieceToMove;
+                        this->draggedFrom = mouseCoordinate;
+                        this->dragPosition = {
+                            static_cast<float>(mousePosition.x),
+                            static_cast<float>(mousePosition.y)
+                        };
+                    }
+                }
+            }
+
+            /* If the mouse is released */
+            if (const auto *mouseReleased = event->getIf<sf::Event::MouseButtonReleased>()) {
+                if (
+                    mouseReleased->button == sf::Mouse::Button::Left && 
+                    this->draggedPiece != nullptr
+                ) {
+                    sf::Vector2i mousePosition = sf::Mouse::getPosition(this->window);
+                    Coordinate dest = this->screenToBoard(mousePosition);
+
+                    board.movePiece(this->draggedFrom, dest);
+
+                    this->draggedPiece = nullptr;
+                }
+            }
+
             /* If the window is resized, reposition visual elements */
             if (event->is<sf::Event::Resized>()) {
                 const auto &resized = event->getIf<sf::Event::Resized>();
@@ -99,6 +134,18 @@ void Renderer::run(Board &board) {
 
         this->window.clear(this->bgColour);
         this->drawBoard();
+
+        if (
+            this->draggedPiece != nullptr &&
+            sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)
+        ) {
+            sf::Vector2i mousePosition = sf::Mouse::getPosition(this->window);
+            this->dragPosition = {
+                static_cast<float>(mousePosition.x),
+                static_cast<float>(mousePosition.y)
+            };
+        }
+
         this->drawPieces(board);
         this->window.display();
     }
@@ -131,6 +178,10 @@ void Renderer::drawPieces(Board &board) {
             Piece *pieceToDraw = board.getPieceFromCoordinate({row, col});
 
             if (pieceToDraw == nullptr) {
+                continue;
+            }
+
+            if (pieceToDraw == this->draggedPiece) {
                 continue;
             }
 
@@ -188,8 +239,65 @@ void Renderer::drawPieces(Board &board) {
             }
         }
     }
+
+    /* Draw dragged piece */
+    if (this->draggedPiece != nullptr) {
+        switch (this->draggedPiece->getType()) {
+            case PieceType::PAWN: {
+                sf::Sprite pawn(
+                    (this->draggedPiece->getColour() == PieceColour::WHITE) ? this->whitePawnTexture : this->blackPawnTexture
+                );
+                pawn.setPosition(this->dragPosition);
+                this->window.draw(pawn);
+                break;
+            }
+            case PieceType::ROOK: {
+                sf::Sprite rook(
+                    (this->draggedPiece->getColour() == PieceColour::WHITE) ? this->whiteRookTexture : this->blackRookTexture
+                );
+                rook.setPosition(this->dragPosition);
+                this->window.draw(rook);
+                break;
+            }
+            case PieceType::KNIGHT: {
+                sf::Sprite knight(
+                    (this->draggedPiece->getColour() == PieceColour::WHITE) ? this->whiteKnightTexture : this->blackKnightTexture
+                );
+                knight.setPosition(this->dragPosition);
+                this->window.draw(knight);
+                break;
+            }
+            case PieceType::BISHOP: {
+                sf::Sprite bishop(
+                    (this->draggedPiece->getColour() == PieceColour::WHITE) ? this->whiteBishopTexture : this->blackBishopTexture
+                );
+                bishop.setPosition(this->dragPosition);
+                this->window.draw(bishop);
+                break;
+            }
+            case PieceType::QUEEN: {
+                sf::Sprite queen(
+                    (this->draggedPiece->getColour() == PieceColour::WHITE) ? this->whiteQueenTexture : this->blackQueenTexture
+                );
+                queen.setPosition(this->dragPosition);
+                this->window.draw(queen);
+                break;
+            }
+            case PieceType::KING: {
+                sf::Sprite king (
+                    (this->draggedPiece->getColour() == PieceColour::WHITE) ? this->whiteKingTexture : this->blackKingTexture
+                );
+                king.setPosition(this->dragPosition);
+                this->window.draw(king);
+                break;
+            }
+            default:
+                break;
+        }
+    }
 }
 
+/* Converts coordinate on board to position on screen */
 sf::Vector2f Renderer::boardToScreen(int row, int col) const {
     float xPadding = (this->window.getSize().x - (BOARD_DIMENSION * SQUARE_SIZE)) / 2.0f;
     float yPadding = (this->window.getSize().y - (BOARD_DIMENSION * SQUARE_SIZE)) / 2.0f;
@@ -198,4 +306,15 @@ sf::Vector2f Renderer::boardToScreen(int row, int col) const {
         xPadding + (col * SQUARE_SIZE),
         yPadding + (row * SQUARE_SIZE)
     };
+}
+
+/* Converts position in screen space to board coordinate */
+Coordinate Renderer::screenToBoard(sf::Vector2i position) const {
+    float xPadding = (this->window.getSize().x - (BOARD_DIMENSION * SQUARE_SIZE)) / 2.0f;
+    float yPadding = (this->window.getSize().y - (BOARD_DIMENSION * SQUARE_SIZE)) / 2.0f;
+
+    int col = static_cast<int>((position.x - xPadding) / SQUARE_SIZE);
+    int row = static_cast<int>((position.y - yPadding) / SQUARE_SIZE);
+
+    return {row, col};
 }

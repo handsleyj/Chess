@@ -14,6 +14,7 @@ public:
     void drawBoard();
     void drawPieces(Board &board);
     sf::Vector2f boardToScreen(int row, int col) const;
+    Coordinate screenToBoard(sf::Vector2i position) const;
 
 private:
     sf::RenderWindow window;
@@ -41,4 +42,8 @@ private:
 
     sf::Texture whiteKingTexture;
     sf::Texture blackKingTexture;
+
+    Piece *draggedPiece = nullptr;
+    Coordinate draggedFrom;
+    sf::Vector2f dragPosition;
 };
