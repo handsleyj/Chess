@@ -247,6 +247,8 @@ void Renderer::drawPieces(Board &board) {
                 sf::Sprite pawn(
                     (this->draggedPiece->getColour() == PieceColour::WHITE) ? this->whitePawnTexture : this->blackPawnTexture
                 );
+                /* Centre the sprite on the mouse, rather than aligning the top left corner with the mouse*/
+                pawn.setOrigin(pawn.getLocalBounds().size / 2.0f);
                 pawn.setPosition(this->dragPosition);
                 this->window.draw(pawn);
                 break;
@@ -255,6 +257,7 @@ void Renderer::drawPieces(Board &board) {
                 sf::Sprite rook(
                     (this->draggedPiece->getColour() == PieceColour::WHITE) ? this->whiteRookTexture : this->blackRookTexture
                 );
+                rook.setOrigin(rook.getLocalBounds().size / 2.0f);
                 rook.setPosition(this->dragPosition);
                 this->window.draw(rook);
                 break;
@@ -263,6 +266,7 @@ void Renderer::drawPieces(Board &board) {
                 sf::Sprite knight(
                     (this->draggedPiece->getColour() == PieceColour::WHITE) ? this->whiteKnightTexture : this->blackKnightTexture
                 );
+                knight.setOrigin(knight.getLocalBounds().size / 2.0f);
                 knight.setPosition(this->dragPosition);
                 this->window.draw(knight);
                 break;
@@ -271,6 +275,7 @@ void Renderer::drawPieces(Board &board) {
                 sf::Sprite bishop(
                     (this->draggedPiece->getColour() == PieceColour::WHITE) ? this->whiteBishopTexture : this->blackBishopTexture
                 );
+                bishop.setOrigin(bishop.getLocalBounds().size / 2.0f);
                 bishop.setPosition(this->dragPosition);
                 this->window.draw(bishop);
                 break;
@@ -279,6 +284,7 @@ void Renderer::drawPieces(Board &board) {
                 sf::Sprite queen(
                     (this->draggedPiece->getColour() == PieceColour::WHITE) ? this->whiteQueenTexture : this->blackQueenTexture
                 );
+                queen.setOrigin(queen.getLocalBounds().size / 2.0f);
                 queen.setPosition(this->dragPosition);
                 this->window.draw(queen);
                 break;
@@ -287,6 +293,7 @@ void Renderer::drawPieces(Board &board) {
                 sf::Sprite king (
                     (this->draggedPiece->getColour() == PieceColour::WHITE) ? this->whiteKingTexture : this->blackKingTexture
                 );
+                king.setOrigin(king.getLocalBounds().size / 2.0f);
                 king.setPosition(this->dragPosition);
                 this->window.draw(king);
                 break;
